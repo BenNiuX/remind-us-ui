@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remind.us - Smart Reminders</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="theme-color" content="#4285f4">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Side Panel -->
+        <aside class="side-panel" id="sidePanel">
+            <div class="panel-header">
+                <button id="closePanel" class="close-panel-btn">
+                    <span class="material-icons">close</span>
+                </button>
+                <h2>Menu</h2>
+            </div>
+            <div class="user-area">
+                <div class="user-profile" id="userProfileSection">
+                    <div class="profile-pic">
+                        <span class="material-icons">account_circle</span>
+                    </div>
+                    <div class="user-info">
+                        <p id="userName">Guest User</p>
+                        <button id="loginBtn" class="btn-login">Login</button>
+                        <button id="logoutBtn" class="btn-logout hidden">Logout</button>
+                    </div>
+                </div>
+            </div>
+            <nav class="panel-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><span class="material-icons">home</span> Home</a></li>
+                    <li><a href="profile.html" id="profileLink"><span class="material-icons">person</span> Profile</a></li>
+                    <li><a href="theme.html" id="themeLink"><span class="material-icons">palette</span> Theme</a></li>
+                    <li><a href="settings.html" id="settingsLink"><span class="material-icons">settings</span> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="app-header">
+                <button id="menuBtn" class="menu-btn">
+                    <span class="material-icons">menu</span>
+                </button>
+                <h1>Remind.us</h1>
+            </header>
+
+            <!-- Reminders Section -->
+            <section class="reminders-section">
+                <h2>Your Reminders</h2>
+                <div class="reminder-cards" id="reminderCards">
+                    <!-- Reminder cards will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Conversation Section -->
+            <section class="conversation-section">
+                <div class="conversation-container" id="conversationContainer">
+                    <!-- Conversation messages will be added here -->
+                    <div class="welcome-message">
+                        <p>Hi there! I'm your reminder assistant. Send me a message, image, or voice recording to create a reminder.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-container">
+                    <input type="text" id="reminderInput" placeholder="Type to create a reminder...">
+                    <div class="input-actions">
+                        <button id="cameraBtn" class="action-btn">
+                            <span class="material-icons">camera_alt</span>
+                        </button>
+                        <button id="voiceBtn" class="action-btn">
+                            <span class="material-icons">mic</span>
+                        </button>
+                        <button id="sendBtn" class="action-btn send-btn">
+                            <span class="material-icons">send</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Templates -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                <p class="modal-footer">Don't have an account? <a href="#" id="signupLink">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reminder Alert Modal -->
+    <div class="modal" id="reminderAlertModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reminder Alert!</h3>
+                <button class="close-modal" id="closeReminderAlert">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="reminder-alert-content">
+                    <div class="reminder-alert-icon">
+                        <span class="material-icons">notification_important</span>
+                    </div>
+                    <h4 id="alertReminderTitle"></h4>
+                    <p id="alertReminderDescription"></p>
+                    <div class="reminder-alert-priority" id="alertReminderPriority"></div>
+                    <div class="reminder-alert-actions">
+                        <button class="btn-secondary" id="snoozeReminderBtn">
+                            <span class="material-icons">snooze</span> Snooze (10 min)
+                        </button>
+                        <button class="btn-primary" id="completeReminderBtn">
+                            <span class="material-icons">done</span> Mark Complete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Reminder Modal -->
+    <div class="modal" id="editReminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Reminder</h3>
+                <button class="close-modal" id="closeEditModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editReminderForm">
+                    <input type="hidden" id="editReminderId">
+                    <div class="form-group">
+                        <label for="editTitle">Title</label>
+                        <input type="text" id="editTitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Description</label>
+                        <textarea id="editDescription" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDueDate">Due Date & Time</label>
+                        <input type="datetime-local" id="editDueDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPriority">Priority</label>
+                        <select id="editPriority" class="form-control">
+                            <option value="normal">Normal</option>
+                            <option value="important">Important</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select id="editStatus" class="form-control">
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary" id="saveReminderBtn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/js/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html> 

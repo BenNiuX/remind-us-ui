@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Remind.us</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="theme-color" content="#4285f4">
+    <style>
+        /* Scrolling styles */
+        .main-content {
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 60px; /* Add bottom padding for scrolling */
+        }
+        
+        .settings-section {
+            background-color: var(--background-light);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        
+        .settings-section h3 {
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-option-label {
+            flex: 1;
+        }
+        
+        .settings-option-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--background-dark);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .select-container {
+            position: relative;
+            width: 200px;
+        }
+        
+        .settings-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            appearance: none;
+        }
+        
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        
+        .btn-save {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-reset {
+            background-color: var(--background-medium);
+            color: var(--text-secondary);
+            border: none;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin-right: 16px;
+        }
+        
+        .slider-container {
+            width: 200px;
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--background-dark);
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .range-value {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .settings-actions {
+            text-align: right;
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Side Panel -->
+        <aside class="side-panel" id="sidePanel">
+            <div class="panel-header">
+                <button id="closePanel" class="close-panel-btn">
+                    <span class="material-icons">close</span>
+                </button>
+                <h2>Menu</h2>
+            </div>
+            <div class="user-area">
+                <div class="user-profile" id="userProfileSection">
+                    <div class="profile-pic">
+                        <span class="material-icons">account_circle</span>
+                    </div>
+                    <div class="user-info">
+                        <p id="userName">John Doe</p>
+                        <button id="logoutBtn" class="btn-logout">Logout</button>
+                    </div>
+                </div>
+            </div>
+            <nav class="panel-nav">
+                <ul>
+                    <li><a href="index.html"><span class="material-icons">home</span> Home</a></li>
+                    <li><a href="profile.html" id="profileLink"><span class="material-icons">person</span> Profile</a></li>
+                    <li><a href="theme.html" id="themeLink"><span class="material-icons">palette</span> Theme</a></li>
+                    <li><a href="settings.html" id="settingsLink" class="active"><span class="material-icons">settings</span> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="app-header">
+                <button id="menuBtn" class="menu-btn">
+                    <span class="material-icons">menu</span>
+                </button>
+                <h1>Settings</h1>
+            </header>
+
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>Reminder Settings</h3>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Default Reminder Time</div>
+                            <div class="settings-option-desc">Set the default time for new reminders</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="defaultTime">
+                                <option value="9">9:00 AM</option>
+                                <option value="12">12:00 PM</option>
+                                <option value="15">3:00 PM</option>
+                                <option value="18">6:00 PM</option>
+                                <option value="20" selected>8:00 PM</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Reminder Sound</div>
+                            <div class="settings-option-desc">Choose the sound for reminder alerts</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="reminderSound">
+                                <option value="chime">Chime</option>
+                                <option value="bell" selected>Bell</option>
+                                <option value="alert">Alert</option>
+                                <option value="gentle">Gentle</option>
+                                <option value="none">None</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Reminder Sound Volume</div>
+                            <div class="settings-option-desc">Set the volume for reminder sounds</div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="70" class="range-slider" id="volumeSlider">
+                            <div class="range-value" id="volumeValue">70%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Notification Settings</h3>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Email Notifications</div>
+                            <div class="settings-option-desc">Receive reminder notifications via email</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked id="emailToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Push Notifications</div>
+                            <div class="settings-option-desc">Receive notifications even when the app is closed</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked id="pushToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Phone Call Notifications</div>
+                            <div class="settings-option-desc">Receive automated phone calls for important reminders</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="callToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>SMS Notifications</div>
+                            <div class="settings-option-desc">Receive text messages for reminders</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="smsToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Sound Notifications</div>
+                            <div class="settings-option-desc">Play sound when a notification arrives</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked id="soundToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Vibration</div>
+                            <div class="settings-option-desc">Vibrate when a notification arrives</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked id="vibrationToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Notification Priority</h3>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Normal Reminders</div>
+                            <div class="settings-option-desc">Set notification delivery for standard reminders</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="normalPriority">
+                                <option value="push">Push Only</option>
+                                <option value="push_email" selected>Push + Email</option>
+                                <option value="push_sms">Push + SMS</option>
+                                <option value="all">All Methods</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Important Reminders</div>
+                            <div class="settings-option-desc">Set notification delivery for important reminders</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="importantPriority">
+                                <option value="push_email">Push + Email</option>
+                                <option value="push_sms" selected>Push + SMS</option>
+                                <option value="push_sms_email">Push + SMS + Email</option>
+                                <option value="all">All Methods</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Critical Reminders</div>
+                            <div class="settings-option-desc">Set notification delivery for critical reminders (e.g., medication)</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="criticalPriority">
+                                <option value="push_sms_email">Push + SMS + Email</option>
+                                <option value="all" selected>All Methods</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Use Phone Calls Only For</div>
+                            <div class="settings-option-desc">Restrict automated calls to specific reminder types</div>
+                        </div>
+                        <div class="select-container">
+                            <select class="settings-select" id="callRestriction">
+                                <option value="none">Don't Use Calls</option>
+                                <option value="critical" selected>Critical Reminders Only</option>
+                                <option value="important">Important & Critical</option>
+                                <option value="all">All Reminders</option>
+                            </select>
+                            <span class="material-icons select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Privacy Settings</h3>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Store Reminders Locally</div>
+                            <div class="settings-option-desc">Keep your reminders on your device only</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="localStorageToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Data Collection</div>
+                            <div class="settings-option-desc">Allow anonymous usage data to improve the app</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked id="dataCollectionToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <div class="settings-option-label">
+                            <div>Clear All Data</div>
+                            <div class="settings-option-desc">Delete all your reminders and preferences</div>
+                        </div>
+                        <button class="btn-reset" id="clearDataBtn">Clear Data</button>
+                    </div>
+                </div>
+                
+                <div class="settings-actions">
+                    <button class="btn-reset" id="resetBtn">Reset to Default</button>
+                    <button class="btn-save" id="saveSettingsBtn">Save Settings</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/js/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        
+        // Specific script for settings page
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidePanel = document.getElementById('sidePanel');
+            const menuBtn = document.getElementById('menuBtn');
+            const closePanel = document.getElementById('closePanel');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeValue = document.getElementById('volumeValue');
+            const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const clearDataBtn = document.getElementById('clearDataBtn');
+            
+            // Toggle side panel
+            menuBtn.addEventListener('click', () => {
+                sidePanel.classList.add('open');
+                if (window.innerWidth < 1024) {
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            closePanel.addEventListener('click', () => {
+                sidePanel.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+            
+            // Update volume value display
+            volumeSlider.addEventListener('input', () => {
+                volumeValue.textContent = volumeSlider.value + '%';
+            });
+            
+            // Save settings button
+            saveSettingsBtn.addEventListener('click', () => {
+                // In a real app, would save all settings to local storage or server
+                alert('Settings saved successfully!');
+            });
+            
+            // Reset button
+            resetBtn.addEventListener('click', () => {
+                if (confirm('Reset all settings to default values?')) {
+                    // In a real app, would reset all settings to defaults
+                    location.reload();
+                }
+            });
+            
+            // Clear data button
+            clearDataBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all your data? This cannot be undone.')) {
+                    // In a real app, would clear all user data
+                    alert('All data has been cleared.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

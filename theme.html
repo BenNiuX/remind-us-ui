@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme - Remind.us</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="theme-color" content="#4285f4">
+    <style>
+        .theme-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 60px; /* Add bottom padding for scrolling */
+        }
+        
+        .theme-section {
+            background-color: var(--background-light);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        
+        .theme-section h3 {
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .theme-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .theme-option {
+            width: 160px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .theme-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .theme-option.active {
+            border-color: var(--primary-color);
+        }
+        
+        .theme-preview {
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .theme-preview-header {
+            height: 20px;
+            background-color: #4285f4;
+        }
+        
+        .dark-theme .theme-preview-header {
+            background-color: #8ab4f8;
+        }
+        
+        .theme-preview-content {
+            flex: 1;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dark-theme .theme-preview-content {
+            background-color: #202124;
+        }
+        
+        .theme-preview-text {
+            width: 60%;
+            height: 8px;
+            background-color: #5f6368;
+            border-radius: 4px;
+        }
+        
+        .dark-theme .theme-preview-text {
+            background-color: #9aa0a6;
+        }
+        
+        .theme-name {
+            text-align: center;
+            padding: 8px;
+            background-color: var(--background-medium);
+            color: var(--text-primary);
+        }
+        
+        .color-palette {
+            margin-top: 24px;
+        }
+        
+        .color-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .color-label {
+            width: 120px;
+            margin-right: 16px;
+        }
+        
+        .color-presets {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .color-preset {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-preset:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-preset.active {
+            border-color: var(--text-primary);
+        }
+        
+        .primary-blue {
+            background-color: #4285f4;
+        }
+        
+        .primary-green {
+            background-color: #0f9d58;
+        }
+        
+        .primary-red {
+            background-color: #db4437;
+        }
+        
+        .primary-purple {
+            background-color: #673ab7;
+        }
+        
+        .primary-orange {
+            background-color: #ff9800;
+        }
+        
+        .custom-color {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+        }
+        
+        .custom-color input {
+            width: 100px;
+            margin-left: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 4px 8px;
+        }
+        
+        .font-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .font-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: 2px solid transparent;
+            text-align: center;
+            cursor: pointer;
+            background-color: var(--background-medium);
+        }
+        
+        .font-option:hover {
+            background-color: var(--background-dark);
+        }
+        
+        .font-option.active {
+            border-color: var(--primary-color);
+        }
+        
+        .roboto-font {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .open-sans-font {
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .lato-font {
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .montserrat-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .theme-actions {
+            text-align: right;
+            margin-top: 32px;
+        }
+        
+        .btn-save {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-reset {
+            background-color: var(--background-medium);
+            color: var(--text-secondary);
+            border: none;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin-right: 16px;
+        }
+        
+        /* Scrolling styles */
+        .main-content {
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Side Panel -->
+        <aside class="side-panel" id="sidePanel">
+            <div class="panel-header">
+                <button id="closePanel" class="close-panel-btn">
+                    <span class="material-icons">close</span>
+                </button>
+                <h2>Menu</h2>
+            </div>
+            <div class="user-area">
+                <div class="user-profile" id="userProfileSection">
+                    <div class="profile-pic">
+                        <span class="material-icons">account_circle</span>
+                    </div>
+                    <div class="user-info">
+                        <p id="userName">John Doe</p>
+                        <button id="logoutBtn" class="btn-logout">Logout</button>
+                    </div>
+                </div>
+            </div>
+            <nav class="panel-nav">
+                <ul>
+                    <li><a href="index.html"><span class="material-icons">home</span> Home</a></li>
+                    <li><a href="profile.html" id="profileLink"><span class="material-icons">person</span> Profile</a></li>
+                    <li><a href="theme.html" id="themeLink" class="active"><span class="material-icons">palette</span> Theme</a></li>
+                    <li><a href="settings.html" id="settingsLink"><span class="material-icons">settings</span> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="app-header">
+                <button id="menuBtn" class="menu-btn">
+                    <span class="material-icons">menu</span>
+                </button>
+                <h1>Theme</h1>
+            </header>
+
+            <div class="theme-container">
+                <div class="theme-section">
+                    <h3>Choose Theme</h3>
+                    <div class="theme-options">
+                        <div class="theme-option active" id="lightTheme">
+                            <div class="theme-preview">
+                                <div class="theme-preview-header"></div>
+                                <div class="theme-preview-content">
+                                    <div class="theme-preview-text"></div>
+                                </div>
+                            </div>
+                            <div class="theme-name">Light</div>
+                        </div>
+                        
+                        <div class="theme-option" id="darkTheme">
+                            <div class="theme-preview dark-theme">
+                                <div class="theme-preview-header"></div>
+                                <div class="theme-preview-content">
+                                    <div class="theme-preview-text"></div>
+                                </div>
+                            </div>
+                            <div class="theme-name">Dark</div>
+                        </div>
+                        
+                        <div class="theme-option" id="autoTheme">
+                            <div class="theme-preview">
+                                <div class="theme-preview-header"></div>
+                                <div class="theme-preview-content" style="background: linear-gradient(to right, #ffffff 50%, #202124 50%)">
+                                    <div class="theme-preview-text" style="background: linear-gradient(to right, #5f6368 50%, #9aa0a6 50%)"></div>
+                                </div>
+                            </div>
+                            <div class="theme-name">Auto (System)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-section">
+                    <h3>Accent Color</h3>
+                    <div class="color-option">
+                        <div class="color-label">Primary Color</div>
+                        <div class="color-presets">
+                            <div class="color-preset primary-blue active" data-color="#4285f4"></div>
+                            <div class="color-preset primary-green" data-color="#0f9d58"></div>
+                            <div class="color-preset primary-red" data-color="#db4437"></div>
+                            <div class="color-preset primary-purple" data-color="#673ab7"></div>
+                            <div class="color-preset primary-orange" data-color="#ff9800"></div>
+                        </div>
+                        <div class="custom-color">
+                            <label>Custom:</label>
+                            <input type="text" id="customPrimary" value="#4285f4" placeholder="#HEX" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-section">
+                    <h3>Font</h3>
+                    <div class="font-options">
+                        <div class="font-option roboto-font active" data-font="Roboto">
+                            Roboto
+                        </div>
+                        <div class="font-option open-sans-font" data-font="Open Sans">
+                            Open Sans
+                        </div>
+                        <div class="font-option lato-font" data-font="Lato">
+                            Lato
+                        </div>
+                        <div class="font-option montserrat-font" data-font="Montserrat">
+                            Montserrat
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="theme-actions">
+                    <button class="btn-reset" id="resetThemeBtn">Reset to Default</button>
+                    <button class="btn-save" id="saveThemeBtn">Save Theme</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/js/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+        
+        // Specific script for theme page
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidePanel = document.getElementById('sidePanel');
+            const menuBtn = document.getElementById('menuBtn');
+            const closePanel = document.getElementById('closePanel');
+            const saveThemeBtn = document.getElementById('saveThemeBtn');
+            const resetThemeBtn = document.getElementById('resetThemeBtn');
+            const lightTheme = document.getElementById('lightTheme');
+            const darkTheme = document.getElementById('darkTheme');
+            const autoTheme = document.getElementById('autoTheme');
+            const colorPresets = document.querySelectorAll('.color-preset');
+            const customPrimary = document.getElementById('customPrimary');
+            const fontOptions = document.querySelectorAll('.font-option');
+            
+            // Toggle side panel
+            menuBtn.addEventListener('click', () => {
+                sidePanel.classList.add('open');
+                if (window.innerWidth < 1024) {
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            closePanel.addEventListener('click', () => {
+                sidePanel.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+            
+            // Theme selection
+            lightTheme.addEventListener('click', () => {
+                document.body.classList.remove('dark-theme');
+                setActiveOption(lightTheme, document.querySelectorAll('.theme-option'));
+            });
+            
+            darkTheme.addEventListener('click', () => {
+                document.body.classList.add('dark-theme');
+                setActiveOption(darkTheme, document.querySelectorAll('.theme-option'));
+            });
+            
+            autoTheme.addEventListener('click', () => {
+                // In a real app, would detect system preference and apply accordingly
+                setActiveOption(autoTheme, document.querySelectorAll('.theme-option'));
+                alert('Auto theme would follow your system preferences');
+            });
+            
+            // Color presets
+            colorPresets.forEach(preset => {
+                preset.addEventListener('click', () => {
+                    const color = preset.getAttribute('data-color');
+                    document.documentElement.style.setProperty('--primary-color', color);
+                    customPrimary.value = color;
+                    setActiveOption(preset, colorPresets);
+                });
+            });
+            
+            // Custom color input
+            customPrimary.addEventListener('change', () => {
+                const color = customPrimary.value;
+                if (/^#[0-9A-F]{6}$/i.test(color)) {
+                    document.documentElement.style.setProperty('--primary-color', color);
+                    clearActiveOptions(colorPresets);
+                } else {
+                    alert('Please enter a valid hex color (e.g., #FF5500)');
+                    customPrimary.value = '#4285f4';
+                }
+            });
+            
+            // Font selection
+            fontOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const font = option.getAttribute('data-font');
+                    document.body.style.fontFamily = `'${font}', Arial, sans-serif`;
+                    setActiveOption(option, fontOptions);
+                });
+            });
+            
+            // Save theme button
+            saveThemeBtn.addEventListener('click', () => {
+                // In a real app, would save theme settings to localStorage or server
+                alert('Theme settings saved successfully!');
+            });
+            
+            // Reset button
+            resetThemeBtn.addEventListener('click', () => {
+                if (confirm('Reset all theme settings to default values?')) {
+                    document.body.classList.remove('dark-theme');
+                    document.documentElement.style.removeProperty('--primary-color');
+                    document.body.style.removeProperty('font-family');
+                    customPrimary.value = '#4285f4';
+                    
+                    setActiveOption(lightTheme, document.querySelectorAll('.theme-option'));
+                    setActiveOption(colorPresets[0], colorPresets);
+                    setActiveOption(fontOptions[0], fontOptions);
+                }
+            });
+            
+            // Helper functions
+            function setActiveOption(element, options) {
+                options.forEach(option => {
+                    option.classList.remove('active');
+                });
+                element.classList.add('active');
+            }
+            
+            function clearActiveOptions(options) {
+                options.forEach(option => {
+                    option.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

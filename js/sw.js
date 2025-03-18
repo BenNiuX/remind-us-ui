@@ -1,4 +1,4 @@
-// Service Worker for Remind.us PWA
+// Service Worker for RemindUs PWA
 
 const CACHE_NAME = 'remind-us-v1';
 const urlsToCache = [

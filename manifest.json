@@ -1,7 +1,7 @@
 {
-    "name": "Remind.us - Smart Reminders",
-    "short_name": "Remind.us",
-    "description": "Create smart reminders using text, images, or voice",
+    "name": "RemindUs",
+    "short_name": "RemindUs",
+    "description": "Smart reminder app with voice, image, and text input",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

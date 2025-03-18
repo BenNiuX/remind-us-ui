@@ -1,4 +1,4 @@
-// Main application JavaScript for Remind.us PWA
+// Main application JavaScript for RemindUs PWA
 
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
@@ -387,6 +387,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showReminderAlert(reminder) {
+        // Set the priority data attribute
+        reminderAlertModal.setAttribute('data-priority', reminder.priority || 'normal');
+
         // Populate the alert modal with reminder details
         alertReminderTitle.textContent = reminder.title;
         alertReminderDescription.textContent = reminder.description;
@@ -400,24 +403,26 @@ document.addEventListener('DOMContentLoaded', () => {
             alertReminderPriority.appendChild(priorityBadge);
         }
         
+        // Play notification sound
+        console.log('Playing sound for priority:', reminder.priority);
+        playNotificationSound(reminder.priority);
+
         // Show the modal
         reminderAlertModal.classList.add('open');
-        
-        // Play notification sound
-        playNotificationSound(reminder.priority);
+
         
         // Request notification permission and show browser notification
         if (Notification.permission === 'granted') {
             new Notification('Reminder Alert!', {
                 body: reminder.title,
-                icon: '/images/icon-192x192.png'
+                icon: 'images/icon-192.png'
             });
         } else if (Notification.permission !== 'denied') {
             Notification.requestPermission().then(permission => {
                 if (permission === 'granted') {
                     new Notification('Reminder Alert!', {
                         body: reminder.title,
-                        icon: '/images/icon-192x192.png'
+                        icon: 'images/icon-192.png'
                     });
                 }
             });
@@ -430,20 +435,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playNotificationSound(priority) {
         const audio = new Audio();
+
+        // Set the audio source based on priority
+        let soundPath;
         switch (priority) {
             case 'critical':
-                audio.src = 'sounds/critical-alert.mp3';
-                audio.volume = 1.0; // Full volume for critical reminders
+                soundPath = 'sounds/critical-alert.mp3';
+                audio.volume = 1.0;
                 break;
             case 'important':
-                audio.src = 'sounds/important-alert.mp3';
+                soundPath = 'sounds/important-alert.mp3';
                 audio.volume = 0.8;
                 break;
             default:
-                audio.src = 'sounds/alert.mp3';
+                soundPath = 'sounds/alert.mp3';
                 audio.volume = 0.6;
         }
-        audio.play().catch(error => console.log('Error playing sound:', error));
+
+        // Add error handling for audio loading
+        audio.addEventListener('error', (e) => {
+            console.error('Error loading audio:', e);
+            // Try to play a fallback sound
+            try {
+                const fallbackAudio = new Audio('sounds/alert.mp3');
+                fallbackAudio.volume = 0.6;
+                fallbackAudio.play().catch(error => console.error('Fallback audio error:', error));
+            } catch (error) {
+                console.error('Failed to play fallback sound:', error);
+            }
+        });
+
+        // Set the audio source and play
+        audio.src = soundPath;
+
+        // Add a small delay to ensure the audio is loaded
+        setTimeout(() => {
+            audio.play().catch(error => {
+                console.error('Error playing sound:', error);
+                // Try to play a fallback sound
+                try {
+                    const fallbackAudio = new Audio('sounds/alert.mp3');
+                    fallbackAudio.volume = 0.6;
+                    fallbackAudio.play().catch(error => console.error('Fallback audio error:', error));
+                } catch (error) {
+                    console.error('Failed to play fallback sound:', error);
+                }
+            });
+        }, 100);
     }
 
     // Add event listeners for reminder alert modal

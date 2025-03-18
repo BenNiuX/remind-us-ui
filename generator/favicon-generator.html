@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RemindUs Favicon Generator</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            background: white;
+        }
+        
+        .icon-row {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        
+        .icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #4285f4;
+            padding: 20%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .icon-16 {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .icon-32 {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .icon-48 {
+            width: 48px;
+            height: 48px;
+        }
+        
+        .material-icons {
+            font-size: 100%;
+            color: white;
+        }
+        
+        .size-label {
+            font-family: Arial, sans-serif;
+            color: #666;
+            margin-top: 4px;
+            text-align: center;
+        }
+        
+        .instructions {
+            font-family: Arial, sans-serif;
+            color: #333;
+            max-width: 600px;
+            margin: 24px auto;
+            padding: 16px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h2>Instructions for creating favicon.ico:</h2>
+        <ol>
+            <li>Take screenshots of each icon size below (use browser dev tools for precise capture)</li>
+            <li>Save each size as a separate PNG file</li>
+            <li>Use a favicon generator tool (like favicon.io) to convert the PNGs into a single .ico file</li>
+            <li>Save the resulting file as favicon.ico in the root directory</li>
+        </ol>
+    </div>
+    
+    <div class="icon-container">
+        <div class="icon-row">
+            <div>
+                <div class="icon-wrapper icon-16">
+                    <span class="material-icons" style="font-size: 9.6px;">notifications</span>
+                </div>
+                <p class="size-label">16x16</p>
+            </div>
+            
+            <div>
+                <div class="icon-wrapper icon-32">
+                    <span class="material-icons" style="font-size: 19.2px;">notifications</span>
+                </div>
+                <p class="size-label">32x32</p>
+            </div>
+            
+            <div>
+                <div class="icon-wrapper icon-48">
+                    <span class="material-icons" style="font-size: 28.8px;">notifications</span>
+                </div>
+                <p class="size-label">48x48</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

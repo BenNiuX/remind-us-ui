@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remind.us - Smart Reminders</title>
+    <title>RemindUs - Smart Reminders</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="manifest" href="manifest.json">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="theme-color" content="#4285f4">
 </head>
@@ -47,7 +48,7 @@
                 <button id="menuBtn" class="menu-btn">
                     <span class="material-icons">menu</span>
                 </button>
-                <h1>Remind.us</h1>
+                <h1>RemindUs</h1>
             </header>
 
             <!-- Reminders Section -->
@@ -71,15 +72,17 @@
             <!-- Input Section -->
             <section class="input-section">
                 <div class="input-container">
-                    <input type="text" id="reminderInput" placeholder="Type to create a reminder...">
                     <div class="input-actions">
-                        <button id="cameraBtn" class="action-btn">
-                            <span class="material-icons">camera_alt</span>
-                        </button>
-                        <button id="voiceBtn" class="action-btn">
+                        <button id="voiceBtn" class="action-btn" title="Record voice">
                             <span class="material-icons">mic</span>
                         </button>
-                        <button id="sendBtn" class="action-btn send-btn">
+                        <button id="cameraBtn" class="action-btn" title="Take a picture">
+                            <span class="material-icons">camera_alt</span>
+                        </button>
+                    </div>
+                    <div class="input-box-container">
+                        <input type="text" id="reminderInput" placeholder="Type your reminder or use camera/voice input..." />
+                        <button id="sendBtn" class="action-btn send-btn" title="Send">
                             <span class="material-icons">send</span>
                         </button>
                     </div>

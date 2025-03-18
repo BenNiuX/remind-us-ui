@@ -1,6 +1,6 @@
-# Remind.us - Smart Reminder PWA
+# RemindUs - Smart Reminder PWA
 
-Remind.us is a Progressive Web App (PWA) for creating and managing reminders using natural language input, images, and voice recordings. The app uses LLM (Large Language Model) technology to analyze user input and generate appropriate reminders with intelligent time estimations.
+RemindUs is a Progressive Web App (PWA) for creating and managing reminders using natural language input, images, and voice recordings. The app uses LLM (Large Language Model) technology to analyze user input and generate appropriate reminders with intelligent time estimations.
 
 ## Features
 
